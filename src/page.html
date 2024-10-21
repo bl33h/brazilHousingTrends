@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Housing Price Prediction</h2>
+        <form id="prediction-form">
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <select id="location" name="location" required>
+                    <option value="Belo Horizonte">Belo Horizonte</option>
+                    <option value="Porto Alegre">Porto Alegre</option>
+                    <option value="Rio de Janeiro">Rio de Janeiro</option>
+                    <option value="São Paulo">São Paulo</option>
+                    <option value="Campinas">Campinas</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="size">Area:</label>
+                <input type="number" id="size" name="size" required>
+            </div>
+            <div class="form-group">
+                <label for="bedrooms">Number of Rooms:</label>
+                <input type="number" id="rooms" name="rooms" required>
+            </div>
+            <div class="form-group">
+                <label for="bedrooms">Number of Bathooms:</label>
+                <input type="number" id="bathrooms" name="bathrooms" required>
+            </div>
+            <div class="form-group">
+                <label for="bathrooms">Number of Parking Spots:</label>
+                <input type="number" id="park" name="park" required>
+            </div>
+            <div class="form-group">
+                <label for="year_built">HOA:</label>
+                <input type="number" id="hoa" name="hoa" required>
+            </div>
+            <div class="form-group">
+                <label for="year_built">Tax:</label>
+                <input type="number" id="tax" name="tax" required>
+            </div>
+            <div class="form-group">
+                <label for="year_built">Fire Insurance:</label>
+                <input type="number" id="fi" name="fi" required>
+            </div>
+            <div class="form-group">
+                <label>Animals:</label>
+                <select id="animals" name="animals" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Furniture:</label>
+                <select id="furniture" name="furniture" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Predict Price</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            console.log(data);
+
+            fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Predicted Price: ' + data.prediction);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+            
+            
+        });
+    </script>
+</body>
+</html>
